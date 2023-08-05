@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Apa Kata mereka?</title>
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+        }
+
+        .header img {
+            max-width: 150px;
+            height: auto;
+        }
+
+        .comment-container {
+            max-width: 800px;
+            margin: 30px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .fake-comment {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+        }
+
+        .fake-comment p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #555;
+        }
+
+        .fake-comment span {
+            font-style: italic;
+            color: #777;
+        }
+
+        .leave-review-container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment-input,
+        .comment-textarea {
+            width: 90%;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            resize: none;
+            transition: border-color 0.3s ease;
+        }
+        .like-btn {
+  padding: 5px 6px;
+  font-size: 14px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.like-btn:hover {
+  background-color: #0056b3;
+}
+
+.like-btn:active {
+            transform: scale(1.1);
+            transition: transform 0.2s;
+        }
+.like-count {
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+        .comment-input:focus,
+        .comment-textarea:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .comment-input::placeholder,
+        .comment-textarea::placeholder {
+            color: #aaa;
+        }
+  .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5px 0;
+        }
+
+        .header img {
+            max-width: 50px;
+            height: auto;
+            border-radius: 20px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .comment-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .comment-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive Styles */
+        @media screen and (max-width: 600px) {
+            .comment-container {
+                margin: 15px;
+                padding: 10px;
+            }
+            .leave-review-container {
+                margin-top: 20px;
+            }
+        }
+
+        @media screen and (min-width: 601px) {
+            .comment-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-gap: 20px;
+            }
+            .leave-review-container {
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="comment-container">
+        <div class="leave-review-container">
+       <div class="header">
+                    <img src="https://cdn.aisbircubes.my.id/aisbircubes_new.abu.png" style="border-radius: 20px;max-width: 50px;" alt="Logo">
+                    <div class="header-title">aisbircubes</div>
+                </div>
+            <h2>Leave a Review</h2>
+            <form action="/submit" method="post">
+                <label for="review-username">Username:</label>
+                <input type="text" id="review-username" name="username" class="comment-input" placeholder="Enter your username" required>
+
+                <label for="review-comment">Comment:</label>
+                <textarea id="review-comment" name="comment" class="comment-textarea" placeholder="Write your review here" required></textarea>
+                <button type="submit" class="comment-btn">Create Comment</button>
+            </form>
+        </div>
+        <div class="fake-comment" style="overflow: auto; overflow-y: auto; max-height: 370px;">
+            <% if (comments && comments.length > 0) { %>
+              <% comments.forEach((comment) => { %>
+                <div class="comment" style="padding-top: 10px;">
+                  <p style="background-color: #00e1ff51;font-size: 17px;">> <span style="font-weight: bold;"><%= comment.username %>:</span> <%= comment.comment %></p>
+                  <div class="like-container">
+                    <button class="like-btn" onclick="likeComment(<%= comment.id %>)">👍 <span style="color: white;" id="like-count-<%= comment.id %>"><%= comment.likes %></span></button>
+                    <button class="like-btn" onclick="dislikeComment(<%= comment.id %>)">👎 <span style="color: white;" id="dislike-count-<%= comment.id %>"><%= comment.dislikes %></span></button>
+                  </div>
+                </div>
+              <% }); %>
+            <% } else { %>
+              <p>No comments yet.</p>
+            <% } %>
+          </div>          
+    </div>
+    <center>
+        <p>Created With 💖 aisbircubes</p>
+    </center>
+    <% if (info === 'ratelimit') { %>
+        <script>
+            window.onload = () => {
+                swal("Please Wait", "Before add more comments", "info");
+                console.error(' Please wait before posting new comments\nio.netty.channel.abstractchannel');
+            }
+          </script>
+    <% } else if (info === 'nopermission') { %>
+        <script>
+            window.onload = () => swal("No Permission", "Please buy at least 1 product on our store", "error");
+          </script>
+            <% } else if (info === 'ipbanned') { %>
+                <script>
+                    window.onload = () => swal("User Banned", "Your Ip address has been banned from the server", "error");
+                  </script>
+        <% } else { %>
+            <script>
+                window.onload = () => console.log('OK')
+              </script>
+    <% } %>
+    <script>
+        async function likeComment(commentId) {
+          const response = await fetch('/like', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ commentId }),
+          });
+          const data = await response.json();
+          const likeCountElement = document.getElementById(`like-count-${commentId}`);
+          if (likeCountElement) {
+            likeCountElement.innerText = data.likes;
+          }
+          else {
+            alert('Unable To Find Server Connected with comments.sqlite')
+          }
+        }
+        async function dislikeComment(commentId) {
+            const response = await fetch('/dislike', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ commentId }),
+            });
+            const data = await response.json();
+            const dislikeCountElement = document.getElementById(`dislike-count-${commentId}`);
+            if (dislikeCountElement) {
+                dislikeCountElement.innerText = data.dislikes;
+            }
+            else {
+            alert('Unable To Find Server Connected with comments.sqlite')
+          }
+    
+            // Remove the "liked" class from the like button if it's there
+            const likeButton = document.getElementById(`like-btn-${commentId}`);
+            if (likeButton) {
+                likeButton.classList.remove('liked');
+            }
+        }
+      </script>
+     <script src="/socket.io/socket.io.js"></script>
+     <script>
+       var socket = io();
+     
+       // Listen for the 'commentsUpdated' event from the server
+       socket.on('commentsUpdated', (comments) => {
+         // Function to update the comments section with the new comments
+         updateComments(comments);
+       });
+     
+       function updateComments(comments) {
+         const commentsContainer = document.querySelector('.fake-comment');
+     
+         // Clear the existing comments before adding the new ones
+         commentsContainer.innerHTML = '';
+     
+         comments.forEach((comment) => {
+           // Create a new comment element and append it to the comments container
+           const newCommentElement = document.createElement('div');
+           newCommentElement.classList.add('comment');
+           newCommentElement.style.paddingTop = '10px';
+           newCommentElement.innerHTML = `
+             <p style="font-size: 17px;">| <span style="font-weight: bold;color: blue;">${comment.username}:</span> ${comment.comment}</p>
+             <div class="like-container">
+               <button class="like-btn" onclick="likeComment(${comment.id})">👍 <span style="color: white;" id="like-count-${comment.id}">${comment.likes}</span></button>
+               <button class="like-btn" onclick="dislikeComment(${comment.id})">👎 <span style="color: white;" id="dislike-count-${comment.id}">${comment.dislikes}</span></button>
+             </div>
+           `;
+     
+           commentsContainer.appendChild(newCommentElement);
+         });
+       }
+     
+       // Function to handle form submission and emit the new comment
+       var form = document.getElementById('form');
+       var input = document.getElementById('input');
+       form.addEventListener('submit', function (e) {
+         e.preventDefault();
+         if (input.value) {
+           socket.emit('chat message', input.value);
+           input.value = '';
+         }
+       });
+     
+       // Listen for the 'chat message' event from the server (optional, if needed)
+       socket.on('chat message', function (msg) {
+         var item = document.createElement('li');
+         item.textContent = msg;
+         messages.appendChild(item);
+         window.scrollTo(0, document.body.scrollHeight);
+       });
+     </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</body>
+</html>
